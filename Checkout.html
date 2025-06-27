@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎉 Crazy Payment | MIVI Aachi Products</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: radial-gradient(circle, #ff9a9e, #fad0c4, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      width: 90%;
+      max-width: 420px;
+      background: white;
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 0 0 25px #ff61d2, 0 0 50px #fe9090;
+      text-align: center;
+      animation: popIn 1s ease-out;
+      z-index: 1;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    h2 {
+      font-size: 28px;
+      background: linear-gradient(to right, #ff512f, #dd2476);
+      color: transparent;
+      animation: rainbowText 2s linear infinite;
+    }
+
+    @keyframes rainbowText {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    input, button {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 12px;
+      font-size: 16px;
+      border: none;
+      outline: none;
+      box-shadow: 0 0 10px #f0f, 0 0 20px #f0f;
+    }
+
+    input {
+      background: #fff0fb;
+      color: #444;
+    }
+
+    input:focus {
+      box-shadow: 0 0 15px #00f0ff, 0 0 25px #ff00ff;
+    }
+
+    button {
+      background: linear-gradient(to right, #00f260, #0575e6);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      animation: wiggle 1s infinite alternate;
+    }
+
+    @keyframes wiggle {
+      0% { transform: rotate(-1deg); }
+      100% { transform: rotate(1deg); }
+    }
+
+    .thank-you-message {
+      font-size: 24px;
+      color: #34eb83;
+      font-weight: bold;
+      animation: boom 1s infinite alternate;
+    }
+
+    @keyframes boom {
+      0% { transform: scale(1); color: #ff0000; }
+      100% { transform: scale(1.2); color: #00ffea; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <div class="container" id="paymentContainer">
+    <h2>💸 Super Fun Payment</h2>
+    <form id="paymentForm">
+      <input type="text" placeholder="Your Cool Name" required />
+      <input type="email" placeholder="Email Address" required />
+      <input type="text" placeholder="Card Number" maxlength="16" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+      <input type="text" id="expiry" placeholder="MM/YY" required maxlength="5" />
+      <input type="text" id="cvv" placeholder="CVV" maxlength="3" required />
+      <button type="submit">💥 Pay Now!</button>
+    </form>
+  </div>
+
+  <audio id="orderSound" src="./zomato_notif_1.mp3" preload="auto"></audio>
+
+  <script>
+    const form = document.getElementById('paymentForm');
+    const container = document.getElementById('paymentContainer');
+    const sound = document.getElementById('orderSound');
+    const expiry = document.getElementById('expiry');
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+
+    expiry.addEventListener('input', function () {
+      this.value = this.value.replace(/[^0-9/]/g, '');
+    });
+
+    function startConfetti() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const confetti = Array.from({ length: 150 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 10 + 5,
+        color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+        tilt: Math.random() * 10 - 10
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confetti.forEach(c => {
+          ctx.beginPath();
+          ctx.fillStyle = c.color;
+          ctx.ellipse(c.x, c.y, c.r, c.r / 2, c.tilt, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+        update();
+      }
+
+      function update() {
+        confetti.forEach(c => {
+          c.y += c.d / 2;
+          c.x += Math.sin(c.tilt);
+          if (c.y > canvas.height) {
+            c.y = -10;
+            c.x = Math.random() * canvas.width;
+          }
+        });
+      }
+
+      setInterval(draw, 30);
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      container.innerHTML = '<h2 style="color: #222;">✨ Please wait...</h2>';
+
+      setTimeout(() => {
+        container.innerHTML = `
+          <h2 class="thank-you-message">🎉 Thank You!<br>Payment Successful!</h2>
+          <p>Enjoy your awesome order! 🚀</p>
+        `;
+        sound.currentTime = 0;
+        sound.play().catch(err => console.log("Sound error:", err));
+        startConfetti();
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

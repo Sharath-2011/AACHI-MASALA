@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Notification Test</title>
+</head>
+<body>
+  <h2>Click the button to test notification</h2>
+  <button onclick="testNotification()">Test Notification</button>
+
+  <script>
+    function testNotification() {
+      if (!("Notification" in window)) {
+        alert("Browser does not support notifications.");
+        return;
+      }
+
+      if (Notification.permission === "granted") {
+        new Notification("MIVI Aachi Products", {
+          body: "🎉 Your payment was successful!",
+          icon: "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+        });
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            new Notification("MIVI Aachi Products", {
+              body: "🎉 Your payment was successful!",
+              icon: "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+            });
+          } else {
+            alert("Notifications blocked.");
+          }
+        });
+      } else {
+        alert("You have blocked notifications.");
+      }
+    }
+  </script>
+</body>
+</html>

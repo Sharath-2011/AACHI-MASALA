@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIVI Products</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+ <!-- Navbar -->
+<nav class="navbar">
+  <img src="./th-removebg-preview.png" alt="Logo">
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="Products.html">Products</a></li>
+    <li><a href="login.html">Login</a></li>
+  </ul>
+</nav>
+
+  <!-- Slideshow Container -->
+  <div class="slideshow-container">
+    <div class="slide fade">
+      <img src="./Aachi biriyani box masala.webp" alt="Slide 1">
+    </div>
+    <div class="slide fade">
+      <img src="./AACHI-BUTTER-CHICKEN-MASALA-100G.jpg" alt="Slide 2">
+    </div>
+    <div class="slide fade">
+      <img src="./aachi-masala-chana-masala-160-g.png" alt="Slide 3">
+    </div>
+  </div>
+
+  <!-- Slideshow JavaScript -->
+  <script>
+    let slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+      let slides = document.getElementsByClassName("slide");
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) { slideIndex = 1 }
+      slides[slideIndex - 1].style.display = "block";
+      setTimeout(showSlides, 2000); // 2 seconds per slide
+    }
+  </script>
+  <!-- ✅ Footer Section Starts Here -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="./th-removebg-preview.png" alt="Logo" />
+        <p>Aachi Products</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="Products.html">Products</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Aachi. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+</body>
+</html>
